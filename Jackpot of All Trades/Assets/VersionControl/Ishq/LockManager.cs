@@ -1,61 +1,65 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;  // Include TextMeshPro namespace
+using TMPro;
 
 public class LockManager : MonoBehaviour
 {
-    public int maxLocks = 3; // Max number of locks allowed
-    public TextMeshProUGUI lockCountText; // Reference to TextMeshProUGUI component for lock count display
+    public int maxLocks = 3;
+    private int currentLocks = 0;
 
-    private int currentLocks = 0; // Current number of locked wheels
-
-    public List<SpriteSelector> wheels; // List of all wheels that can be locked/unlocked
+    public TextMeshProUGUI lockCountText;
+    public List<SpriteSelector> wheels;
 
     void Start()
     {
-        UpdateLockCountText(); // Display initial lock count
+        UpdateLockCountText();
+        foreach (SpriteSelector wheel in wheels)
+        {
+            if (wheel != null && wheel.m_LockButton != null)
+            {
+                wheel.lockTuahScript.LockedIn(wheel.isLocked);
+                UpdateLockButtonText(wheel);
+            }
+        }
     }
 
-    // Method to lock/unlock a wheel, called by each wheel's button
     public void ToggleLock(SpriteSelector wheel)
     {
-        if (wheel.isLocked)
-        {
-            UnlockWheel(wheel);
-        }
-        else
-        {
-            LockWheel(wheel);
-        }
+        if (wheel.isLocked) UnlockWheel(wheel);
+        else if (currentLocks < maxLocks) LockWheel(wheel);
+        else Debug.Log("Maximum lock limit reached!");
+
+        UpdateLockButtonText(wheel);
     }
 
-    void LockWheel(SpriteSelector wheel)
+    private void LockWheel(SpriteSelector wheel)
     {
-        if (currentLocks < maxLocks) // Only allow locking if there are available locks
-        {
-            wheel.LockState(); // Lock the wheel
-            currentLocks++; // Increase the lock count
-            UpdateLockCountText(); // Update the lock count UI
-        }
-        else
-        {
-            Debug.Log("Maximum lock limit reached!");
-        }
+        wheel.isLocked = true;
+        currentLocks++;
+        wheel.lockTuahScript.LockedIn(true);
+        UpdateLockCountText();
+        Debug.Log($"Locked {wheel.name}, current locks: {currentLocks}");
     }
 
-    void UnlockWheel(SpriteSelector wheel)
+    private void UnlockWheel(SpriteSelector wheel)
     {
-        wheel.LockState(); // Unlock the wheel
-        currentLocks--; // Decrease the lock count
-        UpdateLockCountText(); // Update the lock count UI
+        wheel.isLocked = false;
+        currentLocks--;
+        wheel.lockTuahScript.LockedIn(false);
+        UpdateLockCountText();
+        Debug.Log($"Unlocked {wheel.name}, current locks: {currentLocks}");
     }
 
-    void UpdateLockCountText()
+    private void UpdateLockCountText()
     {
         if (lockCountText != null)
-        {
-            lockCountText.text = "Available Locks: " + (maxLocks - currentLocks);
-        }
+            lockCountText.text = $"Available Locks: {maxLocks - currentLocks}";
+    }
+
+    private void UpdateLockButtonText(SpriteSelector wheel)
+    {
+        var buttonText = wheel.m_LockButton.GetComponentInChildren<TextMeshProUGUI>();
+        if (buttonText != null)
+            buttonText.text = wheel.isLocked ? "Unlock" : "Lock";
     }
 }

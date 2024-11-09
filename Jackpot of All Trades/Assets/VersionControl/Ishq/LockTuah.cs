@@ -1,26 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class LockTuah : MonoBehaviour
 {
-    public Button m_LockButton;
-    public GameObject m_LockObject;
-
-    public bool isActive = false;
+    public GameObject m_LockObject;  // Lock sprite object
 
     void Start()
     {
-        m_LockObject.GetComponent<Image>().enabled = !m_LockObject.GetComponent<Image>().enabled;
-        m_LockButton.onClick.AddListener(LockedIn);
+        if (m_LockObject != null)
+        {
+            m_LockObject.GetComponent<Image>().enabled = false;  // Initially hide the lock sprite
+        }
     }
 
-    public void LockedIn()
+    public void LockedIn(bool isActive)
     {
-        isActive = !isActive;
-        m_LockObject.GetComponent<Image>().enabled = !m_LockObject.GetComponent<Image>().enabled;
+        if (m_LockObject != null)
+        {
+            m_LockObject.GetComponent<Image>().enabled = isActive;  // Set visibility based on lock state
+        }
     }
 }
