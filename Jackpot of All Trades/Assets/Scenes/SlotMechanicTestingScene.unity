@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 32661842}
   - component: {fileID: 32661841}
   m_Layer: 6
-  m_Name: image_SpinSprite_Lower
+  m_Name: image_SpinSprite_Lower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -334,6 +334,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32661839}
   m_CullTransparentMesh: 1
+--- !u!1 &87964814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 87964816}
+  - component: {fileID: 87964815}
+  m_Layer: 0
+  m_Name: LockManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &87964815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87964814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 027c02f2ed0d3584c84bceeb7ea42564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLocks: 3
+  lockCountText: {fileID: 1557041963}
+  wheels:
+  - {fileID: 635066473}
+  - {fileID: 724152219}
+  - {fileID: 319400971}
+  - {fileID: 1380144307}
+  - {fileID: 1290277775}
+--- !u!4 &87964816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87964814}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.7952633, y: 1.0756192, z: 873.0091}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &123508616
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +444,7 @@ GameObject:
   - component: {fileID: 186137845}
   - component: {fileID: 186137844}
   m_Layer: 6
-  m_Name: image_SpinSprite_Lower
+  m_Name: image_SpinSprite_Lower5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -588,7 +640,7 @@ GameObject:
   - component: {fileID: 247503289}
   - component: {fileID: 247503288}
   m_Layer: 6
-  m_Name: image_SpinSprite_Upper
+  m_Name: image_SpinSprite_Upper3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -787,7 +839,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b085de9a4ee20b8408abf1c713936b89, type: 3}
   m_SpinButton: {fileID: 202001166}
   m_LockButton: {fileID: 1385027577}
+  lockManager: {fileID: 87964815}
   lockTuahScript: {fileID: 1690985398}
+  spinResultManager: {fileID: 123508617}
   upperSprite: {fileID: 247503286}
   lowerSprite: {fileID: 1156962943}
   stopTime: 4
@@ -1389,7 +1443,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b085de9a4ee20b8408abf1c713936b89, type: 3}
   m_SpinButton: {fileID: 202001166}
   m_LockButton: {fileID: 1611050034}
+  lockManager: {fileID: 87964815}
   lockTuahScript: {fileID: 1778915601}
+  spinResultManager: {fileID: 123508617}
   upperSprite: {fileID: 1873640479}
   lowerSprite: {fileID: 32661839}
   stopTime: 4
@@ -1627,7 +1683,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b085de9a4ee20b8408abf1c713936b89, type: 3}
   m_SpinButton: {fileID: 202001166}
   m_LockButton: {fileID: 1544299254}
+  lockManager: {fileID: 87964815}
   lockTuahScript: {fileID: 1810640132}
+  spinResultManager: {fileID: 123508617}
   upperSprite: {fileID: 771598729}
   lowerSprite: {fileID: 2025673828}
   stopTime: 4
@@ -1682,7 +1740,7 @@ GameObject:
   - component: {fileID: 771598732}
   - component: {fileID: 771598731}
   m_Layer: 6
-  m_Name: image_SpinSprite_Upper
+  m_Name: image_SpinSprite_Upper2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1834,7 +1892,7 @@ GameObject:
   - component: {fileID: 971874064}
   - component: {fileID: 971874063}
   m_Layer: 6
-  m_Name: image_SpinSprite_Upper
+  m_Name: image_SpinSprite_Upper4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2011,7 +2069,7 @@ GameObject:
   - component: {fileID: 1156962946}
   - component: {fileID: 1156962945}
   m_Layer: 6
-  m_Name: image_SpinSprite_Lower
+  m_Name: image_SpinSprite_Lower3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2299,7 +2357,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b085de9a4ee20b8408abf1c713936b89, type: 3}
   m_SpinButton: {fileID: 202001166}
   m_LockButton: {fileID: 1830416765}
+  lockManager: {fileID: 87964815}
   lockTuahScript: {fileID: 1164337196}
+  spinResultManager: {fileID: 123508617}
   upperSprite: {fileID: 1606088612}
   lowerSprite: {fileID: 186137843}
   stopTime: 4
@@ -2401,7 +2461,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b085de9a4ee20b8408abf1c713936b89, type: 3}
   m_SpinButton: {fileID: 202001166}
   m_LockButton: {fileID: 2007023214}
+  lockManager: {fileID: 87964815}
   lockTuahScript: {fileID: 2069409648}
+  spinResultManager: {fileID: 123508617}
   upperSprite: {fileID: 971874061}
   lowerSprite: {fileID: 2146512717}
   stopTime: 4
@@ -2565,58 +2627,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1385027575}
   m_CullTransparentMesh: 1
---- !u!1 &1496040189
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1496040191}
-  - component: {fileID: 1496040190}
-  m_Layer: 0
-  m_Name: LockManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1496040190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1496040189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 027c02f2ed0d3584c84bceeb7ea42564, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxLocks: 3
-  lockCountText: {fileID: 1557041963}
-  wheels:
-  - {fileID: 635066473}
-  - {fileID: 724152219}
-  - {fileID: 319400971}
-  - {fileID: 1380144307}
-  - {fileID: 1290277775}
---- !u!4 &1496040191
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1496040189}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.7952633, y: 1.0756192, z: 873.0091}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1544299252
 GameObject:
   m_ObjectHideFlags: 0
@@ -3099,7 +3109,7 @@ GameObject:
   - component: {fileID: 1606088615}
   - component: {fileID: 1606088614}
   m_Layer: 6
-  m_Name: image_SpinSprite_Upper
+  m_Name: image_SpinSprite_Upper5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3819,7 +3829,7 @@ GameObject:
   - component: {fileID: 1873640482}
   - component: {fileID: 1873640481}
   m_Layer: 6
-  m_Name: image_SpinSprite_Upper
+  m_Name: image_SpinSprite_Upper1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4151,7 +4161,7 @@ GameObject:
   - component: {fileID: 2025673831}
   - component: {fileID: 2025673830}
   m_Layer: 6
-  m_Name: image_SpinSprite_Lower
+  m_Name: image_SpinSprite_Lower2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4397,7 +4407,7 @@ GameObject:
   - component: {fileID: 2146512720}
   - component: {fileID: 2146512719}
   m_Layer: 6
-  m_Name: image_SpinSprite_Lower
+  m_Name: image_SpinSprite_Lower4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4468,5 +4478,5 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 996374615}
   - {fileID: 480896141}
-  - {fileID: 1496040191}
+  - {fileID: 87964816}
   - {fileID: 123508618}
