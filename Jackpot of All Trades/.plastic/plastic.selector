@@ -1,4 +1,0 @@
-repository "Jackpot of All Trades@SsencipeReal@cloud"
-  path "/"
-    br "/main"
-    co "/main"
