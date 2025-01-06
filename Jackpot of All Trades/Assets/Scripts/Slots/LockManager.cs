@@ -53,7 +53,7 @@ public class LockManager : MonoBehaviour
     private void UpdateLockCountText()
     {
         if (lockCountText != null)
-            lockCountText.text = $"Available Locks: {maxLocks - currentLocks}";
+            lockCountText.text = $"Locks: {maxLocks - currentLocks}";
     }
 
     private void UpdateLockButtonText(SpriteSelector wheel)
