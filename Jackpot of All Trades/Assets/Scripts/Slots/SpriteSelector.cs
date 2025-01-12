@@ -12,6 +12,10 @@ public class SpriteSelector : MonoBehaviour
     public SpinResultManager spinResultManager;
     public GameObject upperSprite;
     public GameObject lowerSprite;
+    public Button m_nudgeUpButton;
+    public Button m_nudgeDownButton;
+    public NudgeManager nudgeManager;
+
 
     public float stopTime = 4;
     public bool isLocked = false;
@@ -27,6 +31,8 @@ public class SpriteSelector : MonoBehaviour
         m_SpinButton.onClick.AddListener(StartSpin);
         m_LockButton.onClick.RemoveAllListeners();  // Prevent redundant listeners
         m_LockButton.onClick.AddListener(() => lockManager.ToggleLock(this));
+        m_nudgeUpButton.onClick.AddListener(NudgeUp);
+        m_nudgeDownButton.onClick.AddListener(NudgeDown);
 
         currentSprite = Random.Range(0, sprites.Length);
         gameObject.GetComponent<Image>().sprite = sprites[currentSprite];
@@ -67,6 +73,10 @@ public class SpriteSelector : MonoBehaviour
             spinResultManager.ClearResults();
             spinResultManager.hasClearedResults = true;
         }
+
+        if (nudgeManager != null)
+            nudgeManager.ResetNudges(); // Reset nudges before starting the spin
+
         StartCoroutine(SpinCoroutine());
     }
 
@@ -85,8 +95,29 @@ public class SpriteSelector : MonoBehaviour
             spinResultManager.AddResult(finalSpriteName);
         }
     }
-}
+    public void NudgeUp()
+    {
+        if (FindObjectOfType<NudgeManager>().UseNudge())
+        {
+            currentSprite = (currentSprite + 1) % sprites.Length;
+            UpdateSpriteVisuals();
+        }
+    }
 
-/*
- * TODO: look into serialized fields and changing public gameobjects to private where possible (script objects, upper/lower spites and locks via child name stuff)
- */
+    public void NudgeDown()
+    {
+        if (FindObjectOfType<NudgeManager>().UseNudge())
+        {
+            currentSprite = (currentSprite - 1 + sprites.Length) % sprites.Length;
+            UpdateSpriteVisuals();
+        }
+    }
+
+    private void UpdateSpriteVisuals()
+    {
+        gameObject.GetComponent<Image>().sprite = sprites[currentSprite];
+        upperSprite.GetComponent<Image>().sprite = sprites[(currentSprite - 1 + sprites.Length) % sprites.Length];
+        lowerSprite.GetComponent<Image>().sprite = sprites[(currentSprite + 1) % sprites.Length];
+    }
+
+}
