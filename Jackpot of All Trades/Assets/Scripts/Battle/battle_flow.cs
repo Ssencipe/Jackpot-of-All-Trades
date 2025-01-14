@@ -1,173 +1,73 @@
 using UnityEngine;
-// Consider migrating to a state machine system later in the future
-// tldr each condition is a function that returns true or false, and each event is a function that does said thing and should not return anything
-public class BattleFlow : MonoBehaviour
+//using Systems.Collections;
+//using Systems.Collections.Generic;
+using UnityEngine.SceneManagement;
+public class BattleFlowManager : MonoBehaviour
 {
-    private bool hasLocks;
-    private bool wantToUseLocks;
-    private bool outOfLocks;
-    private bool undoOldLocks;
-    private bool changeLocks;
-    private bool likeRoll;
-    private bool hasRerolls;
-    private bool worthUsingReroll;
+    public GameObject battleScreen;       // Reference to the main battle UI
+    public GameObject slotMechanicScreen; // Reference to the slot mechanic UI
+    public SpriteSelector[] slotWheels;   // All slot wheels
+    public SpinResultManager spinResultManager; // Result manager for spin
+    public LockManager lockManager;      // Lock manager for slot locking
+
+    private enum BattlePhase { Start, PlayerTurn, SlotSpin, EnemyTurn, End }
+    private BattlePhase currentPhase;
 
     void Start()
     {
-        PlayerTurn();
+        currentPhase = BattlePhase.Start;
+        battleScreen.SetActive(true);
+        slotMechanicScreen.SetActive(false);
     }
 
-    void PlayerTurn()
+    public void OnPlayerAction()
     {
-        if (HasLocks())
+        if (currentPhase != BattlePhase.PlayerTurn) return;
+
+        Debug.Log("Player starts slot spin!");
+        battleScreen.SetActive(false);
+        slotMechanicScreen.SetActive(true);
+        foreach (var wheel in slotWheels)
         {
-            if (WantToUseLocks())
-            {
-                ApplyLocksToSlots();
-
-                if (KeepGoing())
-                {
-                    if (outOfLocks && UndoOldLocks())
-                    {
-                        UndoAnOldLock();
-                        ContinueToSpin();
-                    }
-                    else if (outOfLocks && !UndoOldLocks())
-                    {
-                        ContinueToSpin();
-                    }
-                    else
-                    {
-                        UseUpAllLocks();
-                        Spin();
-                        PostSpinActions();
-                    }
-                }
-                else
-                {
-                    ContinueToSpin();
-                }
-            }
-            else
-            {
-                ContinueToSpin();
-            }
+            wheel.enabled = true;
+            wheel.StartSpin();
         }
-        else
+        currentPhase = BattlePhase.SlotSpin;
+    }
+
+    public void OnSlotSpinComplete()
+    {
+        Debug.Log("Slot spin complete, processing results...");
+        battleScreen.SetActive(true);
+        slotMechanicScreen.SetActive(false);
+
+        // Process spin results
+        foreach (var wheel in slotWheels)
         {
-            ContinueToSpin();
+            wheel.enabled = false; // Disable spin after it completes
         }
+
+        currentPhase = BattlePhase.EnemyTurn;
+        StartEnemyTurn();
     }
 
-    bool HasLocks()
+    private void StartEnemyTurn()
     {
-        // Check if player has locks
-        return hasLocks;
+        Debug.Log("Enemy Turn!");
+        // Simulate enemy action (add your own logic here)
+        Invoke("EndEnemyTurn", 2f); // Simulate 2 seconds of enemy action
     }
 
-    bool WantToUseLocks()
+    private void EndEnemyTurn()
     {
-        // Check if player wants to use locks
-        return wantToUseLocks;
+        Debug.Log("Enemy turn ends, back to player turn.");
+        currentPhase = BattlePhase.PlayerTurn;
     }
 
-    void ApplyLocksToSlots()
+    public void EndBattle()
     {
-        // Apply locks to slots logic here
-        Debug.Log("Applying locks to slots...");
-    }
-
-    bool KeepGoing()
-    {
-        // Check if the player wants to keep going
-        return !outOfLocks; // Simplified logic for example
-    }
-
-    bool UndoOldLocks()
-    {
-        // Check if player wants to undo old locks
-        return undoOldLocks;
-    }
-
-    void UndoAnOldLock()
-    {
-        // Logic for undoing an old lock
-        Debug.Log("Undoing an old lock...");
-    }
-
-    void ContinueToSpin()
-    {
-        // Continue to spin logic
-        Debug.Log("Continuing to spin...");
-    }
-
-    void UseUpAllLocks()
-    {
-        // Use up all locks logic
-        Debug.Log("Using up all locks...");
-    }
-
-    void Spin()
-    {
-        // Spin logic
-        Debug.Log("Spinning...");
-    }
-
-    void PostSpinActions()
-    {
-        if (LikeRoll())
-        {
-            EndTurn();
-        }
-        else if (ChangeLocks())
-        {
-            UseRerolls();
-            PostSpinActions(); // Recursive call to check after reroll
-        }
-        else if (HaveRerolls() && WorthUsingReroll())
-        {
-            UseRerolls();
-            PostSpinActions(); // Recursive call to check after reroll
-        }
-        else
-        {
-            EndTurn();
-        }
-    }
-
-    bool LikeRoll()
-    {
-        // Check if the player likes the roll
-        return likeRoll;
-    }
-
-    bool ChangeLocks()
-    {
-        // Check if player wants to change locks
-        return changeLocks;
-    }
-
-    bool HaveRerolls()
-    {
-        // Check if player has rerolls available
-        return hasRerolls;
-    }
-
-    bool WorthUsingReroll()
-    {
-        // Check if reroll is worth using
-        return worthUsingReroll;
-    }
-
-    void UseRerolls()
-    {
-        // Use rerolls logic
-        Debug.Log("Using rerolls...");
-    }
-
-    void EndTurn()
-    {
-        // End turn logic
-        Debug.Log("Ending turn...");
+        Debug.Log("Battle Ended!");
+        currentPhase = BattlePhase.End;
+        // Add end battle logic, such as victory/defeat
     }
 }
