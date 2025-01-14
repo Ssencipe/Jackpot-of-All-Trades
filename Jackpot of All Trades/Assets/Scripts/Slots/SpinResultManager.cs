@@ -18,4 +18,9 @@ public class SpinResultManager : MonoBehaviour
         hasClearedResults = false;  // Reset flag for the next spin cycle
         Debug.Log("Cleared all spin results.");
     }
+    public void OnSpinComplete()
+{
+    // Existing logic to process results
+    FindObjectOfType<BattleFlowManager>().OnSlotSpinComplete();
+}
 }
