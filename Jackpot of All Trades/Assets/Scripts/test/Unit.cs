@@ -13,21 +13,25 @@ public class Unit : MonoBehaviour
 	public int maxHP;
 	public int currentHP;
 
-	public bool TakeDamage(int dmg)
-	{
-		currentHP -= dmg;
+    public bool TakeDamage(int dmg)
+    {
+        currentHP -= dmg;
 
-		if (currentHP <= 0)
-			return true;
-		else
-			return false;
-	}
+        // Return true if the unit is dead
+        return currentHP <= 0;
+    }
 
-	public void Heal(int amount)
-	{
-		currentHP += amount;
-		if (currentHP > maxHP)
-			currentHP = maxHP;
-	}
+    public void Heal(int amount, BattleHUD hud)
+    {
+        currentHP += amount;
+        if (currentHP > maxHP)
+            currentHP = maxHP;
+
+        // Pass the correct position (e.g., the HUD's transform position)
+        Vector3 spawnPosition = hud.transform.position;
+        hud.SpawnFloatingNumber(amount, true, spawnPosition);
+    }
+
+
 
 }
