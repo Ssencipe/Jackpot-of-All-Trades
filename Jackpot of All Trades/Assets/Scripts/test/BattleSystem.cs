@@ -9,6 +9,7 @@ public class BattleSystem : MonoBehaviour
 {
 
 	public GameObject playerPrefab;
+    public GameObject slotsUI;
 	public GameObject enemyPrefab;
 
 	public Transform playerBattleStation;
@@ -28,6 +29,7 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
 		state = BattleState.START;
+        slotsUI.SetActive(false);
 		StartCoroutine(SetupBattle());
     }
 
@@ -51,7 +53,9 @@ public class BattleSystem : MonoBehaviour
 	}
 
     IEnumerator PlayerAttack()
-    {
+    {   
+            // Refactor this 
+        slotsUI.SetActive(true);
         // Apply damage to the enemy unit
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
 
@@ -63,8 +67,9 @@ public class BattleSystem : MonoBehaviour
 
         dialogueText.text = "The attack is successful!";
 
-        yield return new WaitForSeconds(2f);
-
+        slotsUI.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        slotsUI.SetActive(false);
         if (isDead)
         {
             state = BattleState.WON;
