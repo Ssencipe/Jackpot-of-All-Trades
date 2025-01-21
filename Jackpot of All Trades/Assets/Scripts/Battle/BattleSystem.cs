@@ -35,13 +35,17 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator SetupBattle()
 	{
-		GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
-		playerUnit = playerGO.GetComponent<Unit>();
+        // Instantiate player and set its Z position
+        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
+        playerUnit = playerGO.GetComponent<Unit>();
+        playerGO.transform.position = new Vector3(playerGO.transform.position.x, playerGO.transform.position.y, 100);
 
-		GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
-		enemyUnit = enemyGO.GetComponent<Unit>();
+        // Instantiate enemy and set its Z position
+        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
+        enemyUnit = enemyGO.GetComponent<Unit>();
+        enemyGO.transform.position = new Vector3(enemyGO.transform.position.x, enemyGO.transform.position.y, 100);
 
-		dialogueText.text = "A wild " + enemyUnit.unitName + " approaches...";
+        dialogueText.text = "A wild " + enemyUnit.unitName + " approaches...";
 
 		playerHUD.SetHUD(playerUnit);
 		enemyHUD.SetHUD(enemyUnit);

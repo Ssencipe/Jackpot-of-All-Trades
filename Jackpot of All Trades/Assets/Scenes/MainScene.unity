@@ -7591,6 +7591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 5674484368629161613, guid: 10021f1ffb851ee42a2f9e2ce33428b7, type: 3}
+  slotsUI: {fileID: 1793769564}
   enemyPrefab: {fileID: 5046871492963100558, guid: 302bdc8dead690247957754e115acde3, type: 3}
   playerBattleStation: {fileID: 776899475}
   enemyBattleStation: {fileID: 1466009198}
@@ -8197,7 +8198,7 @@ RectTransform:
   m_GameObject: {fileID: 1793769564}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0740587, y: 1.0740587, z: 1.0740587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1256747425}
@@ -8213,7 +8214,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -68.87598, y: -38.132446}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1793769566
 MonoBehaviour:
