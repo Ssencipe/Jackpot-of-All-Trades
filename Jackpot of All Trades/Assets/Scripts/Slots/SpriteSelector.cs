@@ -170,7 +170,7 @@ public class SpriteSelector : MonoBehaviour
             wheel.UpdateSpriteVisuals(); // Refresh visuals
         }
 
-        Debug.Log("Machine has been reset. Spins available again.");
+        //Debug.Log("Machine has been reset. Spins available again.");
     }
 
 

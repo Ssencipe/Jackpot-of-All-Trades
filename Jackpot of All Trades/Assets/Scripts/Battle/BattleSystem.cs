@@ -12,6 +12,9 @@ public class BattleSystem : MonoBehaviour
     public GameObject slotsUI;
 	public GameObject enemyPrefab;
 
+    public Button doneButton;
+    private bool isSpinning;
+
 	public Transform playerBattleStation;
 	public Transform enemyBattleStation;
 
@@ -30,7 +33,11 @@ public class BattleSystem : MonoBehaviour
     {
 		state = BattleState.START;
         slotsUI.SetActive(false);
-		StartCoroutine(SetupBattle());
+
+        isSpinning = false;
+        doneButton.onClick.AddListener(EndTurn);
+
+        StartCoroutine(SetupBattle());
     }
 
 	IEnumerator SetupBattle()
@@ -50,15 +57,17 @@ public class BattleSystem : MonoBehaviour
 		playerHUD.SetHUD(playerUnit);
 		enemyHUD.SetHUD(enemyUnit);
 
-		yield return new WaitForSeconds(2f);
+		yield return new WaitForSeconds(1f);
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
 	}
 
     IEnumerator PlayerAttack()
-    {   
-            // Refactor this 
+    {
+        // Refactor this 
+        isSpinning = true;
+
         slotsUI.SetActive(true);
         // Apply damage to the enemy unit
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
@@ -72,7 +81,10 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "The attack is successful!";
 
         slotsUI.SetActive(true);
-        yield return new WaitForSeconds(30f);
+
+        //yield return new WaitUntil(() => isSpinningDone);
+        yield return new WaitWhile(() => isSpinning);
+
         slotsUI.SetActive(false);
         if (isDead)
         {
@@ -164,4 +176,10 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(PlayerHeal());
 	}
 
+    //Add any spin state turn end logic here
+    public void EndTurn()
+    {
+        isSpinning = false;
+        Debug.Log("Yeah this part worked");
+    }
 }

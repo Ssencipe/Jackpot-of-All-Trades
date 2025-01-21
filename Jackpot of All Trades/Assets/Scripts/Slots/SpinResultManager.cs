@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpinResultManager : MonoBehaviour
 {
@@ -19,8 +20,8 @@ public class SpinResultManager : MonoBehaviour
         Debug.Log("Cleared all spin results.");
     }
     public void OnSpinComplete()
-{
-    // Existing logic to process results
-    FindObjectOfType<BattleFlowManager>().OnSlotSpinComplete();
-}
+    {
+        // Existing logic to process results
+        FindObjectOfType<BattleFlowManager>().OnSlotSpinComplete();
+    }
 }
