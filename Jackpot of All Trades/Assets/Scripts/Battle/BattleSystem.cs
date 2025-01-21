@@ -72,7 +72,7 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "The attack is successful!";
 
         slotsUI.SetActive(true);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(30f);
         slotsUI.SetActive(false);
         if (isDead)
         {

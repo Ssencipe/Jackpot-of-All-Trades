@@ -1,10 +1,11 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SpriteSelector : MonoBehaviour
 {
-    public Sprite[] sprites;
+    public Sprite[] sprites; //Array of sprites in wheel
     public Button m_SpinButton;
     public Button m_LockButton;
     public LockManager lockManager;
@@ -17,22 +18,34 @@ public class SpriteSelector : MonoBehaviour
     public NudgeManager nudgeManager;
 
 
-    public float stopTime = 4;
+    public float stopTime = 4; //How long wheel spins for
     public bool isLocked = false;
     private int currentSprite = 0;
     private float timeSinceLastUpdate = 0f;
     private float scrollCooldown = 0.2f;
 
+    public int maxSpins = 3; // Maximum spins allowed before reset
+    private int remainingSpins; // Tracks remaining spins
+    public TextMeshProUGUI spinCounterText; // UI element to show spins remaining
+    public Button doneButton; // Reference to the Done button
 
     void Start()
     {
         enabled = false;
 
+        remainingSpins = maxSpins; // Initialize spins
+        UpdateSpinCounterText();
+
         m_SpinButton.onClick.AddListener(StartSpin);
+
         m_LockButton.onClick.RemoveAllListeners();  // Prevent redundant listeners
         m_LockButton.onClick.AddListener(() => lockManager.ToggleLock(this));
+
         m_nudgeUpButton.onClick.AddListener(NudgeUp);
         m_nudgeDownButton.onClick.AddListener(NudgeDown);
+
+        doneButton.onClick.RemoveAllListeners();
+        doneButton.onClick.AddListener(ResetMachine);
 
         currentSprite = Random.Range(0, sprites.Length);
         gameObject.GetComponent<Image>().sprite = sprites[currentSprite];
@@ -77,7 +90,23 @@ public class SpriteSelector : MonoBehaviour
         if (nudgeManager != null)
             nudgeManager.ResetNudges(); // Reset nudges before starting the spin
 
-        StartCoroutine(SpinCoroutine());
+        if (remainingSpins > 0)
+        {
+            remainingSpins--;
+            UpdateSpinCounterText();
+
+            if (remainingSpins == 0)
+            {
+                m_SpinButton.interactable = false; // Disable spin button
+            }
+
+            // Start the spin logic
+            StartCoroutine(SpinCoroutine());
+        }
+        else
+        {
+            Debug.Log("No spins remaining! Click the Done button to reset.");
+        }
     }
 
     private IEnumerator SpinCoroutine()
@@ -119,5 +148,30 @@ public class SpriteSelector : MonoBehaviour
         upperSprite.GetComponent<Image>().sprite = sprites[(currentSprite - 1 + sprites.Length) % sprites.Length];
         lowerSprite.GetComponent<Image>().sprite = sprites[(currentSprite + 1) % sprites.Length];
     }
+
+    private void UpdateSpinCounterText()
+    {
+        spinCounterText.text = $"Spins: {remainingSpins}";
+    }
+
+    public void ResetMachine()
+    {
+        remainingSpins = maxSpins; // Reset spins
+        UpdateSpinCounterText();
+
+        m_SpinButton.interactable = true; // Re-enable spin button
+
+        // Reset all wheels to their initial state
+        SpriteSelector[] allWheels = FindObjectsOfType<SpriteSelector>();
+        foreach (var wheel in allWheels)
+        {
+            wheel.enabled = false; // Ensure wheels are not spinning
+            wheel.currentSprite = Random.Range(0, wheel.sprites.Length); // Randomize starting sprite
+            wheel.UpdateSpriteVisuals(); // Refresh visuals
+        }
+
+        Debug.Log("Machine has been reset. Spins available again.");
+    }
+
 
 }
