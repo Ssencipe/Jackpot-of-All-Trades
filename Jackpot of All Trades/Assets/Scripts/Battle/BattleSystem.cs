@@ -179,7 +179,7 @@ public class BattleSystem : MonoBehaviour
     //Add any spin state turn end logic here
     public void EndTurn()
     {
-        isSpinning = false;
         Debug.Log("Yeah this part worked");
+        isSpinning = false;
     }
 }

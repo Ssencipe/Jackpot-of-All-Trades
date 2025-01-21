@@ -44,7 +44,6 @@ public class SpriteSelector : MonoBehaviour
         m_nudgeUpButton.onClick.AddListener(NudgeUp);
         m_nudgeDownButton.onClick.AddListener(NudgeDown);
 
-        doneButton.onClick.RemoveAllListeners();
         doneButton.onClick.AddListener(ResetMachine);
 
         currentSprite = Random.Range(0, sprites.Length);
