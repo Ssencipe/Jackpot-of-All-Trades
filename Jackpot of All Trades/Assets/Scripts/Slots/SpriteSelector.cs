@@ -52,6 +52,33 @@ public class SpriteSelector : MonoBehaviour
         lowerSprite.GetComponent<Image>().sprite = sprites[(currentSprite + 1) % sprites.Length];
     }
 
+    public void Initialize()
+    {
+        // Assign external references
+        m_SpinButton = GameObject.Find("button_Spin").GetComponent<Button>();
+        m_LockButton = GameObject.Find("button_Lock").GetComponent<Button>();
+        lockManager = GameObject.Find("LockManager").GetComponent<LockManager>();
+        spinResultManager = GameObject.Find("SpinResultManager").GetComponent<SpinResultManager>();
+        nudgeManager = GameObject.Find("NudgeManager").GetComponent<NudgeManager>();
+        spinCounterText = GameObject.Find("text_SpinCount").GetComponent<TextMeshProUGUI>();
+        doneButton = GameObject.Find("button_Done").GetComponent<Button>();
+
+        // Assign prefab child references
+        lockTuahScript = transform.Find("image_LockSprite").GetComponent<LockTuah>();
+        upperSprite = transform.Find("image_SpinSprite_Upper").gameObject;
+        lowerSprite = transform.Find("image_SpinSprite_Lower").gameObject;
+        m_nudgeUpButton = transform.Find("button_NudgeUp").GetComponent<Button>();
+        m_nudgeDownButton = transform.Find("button_NudgeDown").GetComponent<Button>();
+
+        // Validate if all references were successfully assigned
+        if (m_SpinButton == null || m_LockButton == null || upperSprite == null || lowerSprite == null ||
+            m_nudgeUpButton == null || m_nudgeDownButton == null || spinCounterText == null || doneButton == null ||
+            lockManager == null || lockTuahScript == null || spinResultManager == null || nudgeManager == null)
+        {
+            Debug.LogError("SpriteSelector: One or more references are not assigned correctly!");
+        }
+    }
+
     void Update()
     {
         if (!isLocked) ImageSpin();
@@ -171,6 +198,4 @@ public class SpriteSelector : MonoBehaviour
 
         //Debug.Log("Machine has been reset. Spins available again.");
     }
-
-
 }
