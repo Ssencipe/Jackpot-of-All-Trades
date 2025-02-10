@@ -70,7 +70,7 @@ public class BattleSystem : MonoBehaviour
 
         slotsUI.SetActive(true);
         // Apply damage to the enemy unit
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+        bool isDead = enemyUnit.TakeDamage(playerUnit.damage, enemyHUD);
 
         // Spawn the damage number over the enemy
         enemyHUD.SpawnFloatingNumber(playerUnit.damage, false, enemyHUD.transform.position);
@@ -82,7 +82,6 @@ public class BattleSystem : MonoBehaviour
 
         slotsUI.SetActive(true);
 
-        //yield return new WaitUntil(() => isSpinningDone);
         yield return new WaitWhile(() => isSpinning);
 
         slotsUI.SetActive(false);
@@ -105,7 +104,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // Apply damage to the player unit
-        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+        bool isDead = playerUnit.TakeDamage(enemyUnit.damage, playerHUD);
 
         // Spawn the damage number over the player
         playerHUD.SpawnFloatingNumber(enemyUnit.damage, false, playerHUD.transform.position);
@@ -182,4 +181,28 @@ public class BattleSystem : MonoBehaviour
         Debug.Log("Yeah this part worked");
         isSpinning = false;
     }
+
+    public void OnShieldButton()
+    {
+        if (state != BattleState.PLAYERTURN)
+            return;
+
+        StartCoroutine(PlayerShield());
+    }
+
+    IEnumerator PlayerShield()
+    {
+        dialogueText.text = "You brace for impact!";
+
+        // Grant 10 shield points
+        playerUnit.GainShield(10);
+        playerHUD.SetShield(playerUnit.currentShield); // Update shield UI
+
+        yield return new WaitForSeconds(1f);
+
+        // Move to enemy turn
+        state = BattleState.ENEMYTURN;
+        StartCoroutine(EnemyTurn());
+    }
+
 }
