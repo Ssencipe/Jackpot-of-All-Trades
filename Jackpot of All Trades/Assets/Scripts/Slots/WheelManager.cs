@@ -49,6 +49,11 @@ public class WheelManager : MonoBehaviour
             if (selector != null)
             {
                 selector.Initialize();
+                Debug.Log($"Initialized {newWheel.name}");
+            }
+            else
+            {
+                Debug.LogError($"SpriteSelector component missing on {newWheel.name}");
             }
 
             wheels.Add(newWheel);

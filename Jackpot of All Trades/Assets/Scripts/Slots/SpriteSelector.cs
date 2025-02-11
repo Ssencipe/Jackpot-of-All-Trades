@@ -32,7 +32,8 @@ public class SpriteSelector : MonoBehaviour
     void Start()
     {
         enabled = false;
-
+        Debug.Log($"SpriteSelector Start() called for {gameObject.name}");
+        
         remainingSpins = maxSpins; // Initialize spins
         UpdateSpinCounterText();
 
@@ -77,6 +78,15 @@ public class SpriteSelector : MonoBehaviour
         {
             Debug.LogError("SpriteSelector: One or more references are not assigned correctly!");
         }
+        //from gpt
+         Debug.Log($"Initializing SpriteSelector for {gameObject.name}...");
+         spinCounterText = transform.Find("text_SpinCount")?.GetComponent<TextMeshProUGUI>();
+         if (spinCounterText == null)
+         {
+            spinCounterText = FindObjectOfType<TextMeshProUGUI>(); 
+            Debug.LogError($"spinCounterText is NULL in {gameObject.name} even though it should be assigned!");
+            Debug.LogError($"spinCounterText not found in {gameObject.name}. Check if it's correctly placed in the prefab.");
+         }
     }
 
     void Update()
@@ -177,6 +187,12 @@ public class SpriteSelector : MonoBehaviour
 
     private void UpdateSpinCounterText()
     {
+        if (spinCounterText == null)
+        {
+            Debug.LogError($"spinCounterText is null in {gameObject.name}. Ensure it is assigned correctly.");
+            return;
+        }
+
         spinCounterText.text = $"Spins: {remainingSpins}";
     }
 
