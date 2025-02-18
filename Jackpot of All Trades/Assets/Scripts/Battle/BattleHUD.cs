@@ -4,36 +4,44 @@ using TMPro;
 
 public class BattleHUD : MonoBehaviour
 {
-    public Text nameText;
-    public Text levelText;
     public Slider hpSlider;
+    public TextMeshProUGUI hpText;
+    public Slider shieldSlider;
     public TextMeshProUGUI shieldText;
 
     public GameObject floatingNumberPrefab;
 
     public void SetHUD(Unit unit)
     {
-        nameText.text = unit.unitName;
-        levelText.text = "Lvl " + unit.unitLevel;
         hpSlider.maxValue = unit.maxHP;
         hpSlider.value = unit.currentHP;
+        SetHP(unit.currentHP); //Initialize HP display
+
+        shieldSlider.maxValue = unit.maxHP;
+        shieldSlider.value = unit.currentShield;
         SetShield(unit.currentShield); // Initialize shield display
     }
 
     public void SetHP(int hp)
     {
-        hpSlider.value = hp;
+        hpText.text = "Health: " + hp; //update HP text
+
+        hpSlider.value = hp; //update healthbar
     }
 
     public void SetShield(int shield)
     {
-        shieldText.text = "Shield: " + shield; // Update shield display
+        shieldText.text = "Shield: " + shield; // Update shield text
+        shieldSlider.value = Mathf.Clamp(shield, 0, shieldSlider.maxValue); // Scale the shield bar based on max HP
+
+        // Spawn floating shield number
+        SpawnFloatingNumber(shield, FloatingNumberType.Shield, shieldText.transform.position);
     }
 
-    public void SpawnFloatingNumber(int value, bool isHealing, Vector3 spawnPosition) //For damage/heal number pop-ups
+    public void SpawnFloatingNumber(int value, FloatingNumberType type, Vector3 spawnPosition)
     {
         GameObject floatingNumber = Instantiate(floatingNumberPrefab, spawnPosition, Quaternion.identity, transform);
         FloatingNumberController controller = floatingNumber.GetComponent<FloatingNumberController>();
-        controller.Initialize(value, isHealing);
+        controller.Initialize(value, type);
     }
 }

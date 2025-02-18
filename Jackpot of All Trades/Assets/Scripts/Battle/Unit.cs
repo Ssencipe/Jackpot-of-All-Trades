@@ -49,7 +49,7 @@ public class Unit : MonoBehaviour
 
         // Pass the correct position (e.g., the HUD's transform position)
         Vector3 spawnPosition = hud.transform.position;
-        hud.SpawnFloatingNumber(amount, true, spawnPosition);
+        hud.SpawnFloatingNumber(amount, FloatingNumberType.Heal, spawnPosition); // Updated to use FloatingNumberType
     }
 
     public void GainShield(int amount)

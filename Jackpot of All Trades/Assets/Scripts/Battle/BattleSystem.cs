@@ -21,8 +21,6 @@ public class BattleSystem : MonoBehaviour
 	Unit playerUnit;
 	Unit enemyUnit;
 
-	public Text dialogueText;
-
 	public BattleHUD playerHUD;
 	public BattleHUD enemyHUD;
 
@@ -52,8 +50,6 @@ public class BattleSystem : MonoBehaviour
         enemyUnit = enemyGO.GetComponent<Unit>();
         enemyGO.transform.position = new Vector3(enemyGO.transform.position.x, enemyGO.transform.position.y, 100);
 
-        dialogueText.text = "A wild " + enemyUnit.unitName + " approaches...";
-
 		playerHUD.SetHUD(playerUnit);
 		enemyHUD.SetHUD(enemyUnit);
 
@@ -68,17 +64,20 @@ public class BattleSystem : MonoBehaviour
         // Refactor this 
         isSpinning = true;
 
+        // Rotate the player forward by 25 degrees
+        StartCoroutine(RotatePlayer(playerBattleStation, 25f, 0.2f));
+
+        yield return new WaitForSeconds(1f);
+
         slotsUI.SetActive(true);
         // Apply damage to the enemy unit
         bool isDead = enemyUnit.TakeDamage(playerUnit.damage, enemyHUD);
 
         // Spawn the damage number over the enemy
-        enemyHUD.SpawnFloatingNumber(playerUnit.damage, false, enemyHUD.transform.position);
+        enemyHUD.SpawnFloatingNumber(playerUnit.damage, FloatingNumberType.Damage, enemyHUD.transform.position);
 
         // Update the enemy's HP bar
         enemyHUD.SetHP(enemyUnit.currentHP);
-
-        dialogueText.text = "The attack is successful!";
 
         slotsUI.SetActive(true);
 
@@ -99,47 +98,75 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator EnemyTurn()
     {
-        dialogueText.text = enemyUnit.unitName + " attacks!";
+        yield return new WaitForSeconds(1f);
+
+        int action = Random.Range(0, 3); // 0 = Attack, 1 = Heal, 2 = Shield
+
+        if (action == 0)
+        {
+            yield return StartCoroutine(EnemyAttack());
+        }
+        else if (action == 1)
+        {
+            yield return StartCoroutine(EnemyHeal());
+        }
+        else if (action == 2)
+        {
+            yield return StartCoroutine(EnemyShield());
+        }
 
         yield return new WaitForSeconds(1f);
 
-        // Apply damage to the player unit
+        state = BattleState.PLAYERTURN;
+        PlayerTurn();
+    }
+
+    IEnumerator EnemyAttack()
+    {
+        yield return new WaitForSeconds(1f);
+
         bool isDead = playerUnit.TakeDamage(enemyUnit.damage, playerHUD);
-
-        // Spawn the damage number over the player
-        playerHUD.SpawnFloatingNumber(enemyUnit.damage, false, playerHUD.transform.position);
-
-        // Update the player's HP bar
+        playerHUD.SpawnFloatingNumber(enemyUnit.damage, FloatingNumberType.Damage, playerHUD.transform.position);
         playerHUD.SetHP(playerUnit.currentHP);
-
-        yield return new WaitForSeconds(1f);
 
         if (isDead)
         {
             state = BattleState.LOST;
             EndBattle();
         }
-        else
-        {
-            state = BattleState.PLAYERTURN;
-            PlayerTurn();
-        }
+    }
+
+    IEnumerator EnemyHeal()
+    {
+        yield return new WaitForSeconds(1f);
+
+        enemyUnit.Heal(5, enemyHUD);
+        enemyHUD.SpawnFloatingNumber(5, FloatingNumberType.Heal, enemyHUD.transform.position);
+        enemyHUD.SetHP(enemyUnit.currentHP);
+    }
+
+    IEnumerator EnemyShield()
+    {
+        yield return new WaitForSeconds(1f);
+
+        enemyUnit.GainShield(10);
+        enemyHUD.SetShield(enemyUnit.currentShield); // Update shield UI
     }
 
     void EndBattle()
 	{
 		if(state == BattleState.WON)
 		{
-			dialogueText.text = "You won the battle!";
+            //used to have dialogue text here
 		} else if (state == BattleState.LOST)
 		{
-			dialogueText.text = "You were defeated.";
+            //used to have dialogue code here
 		}
 	}
 
 	void PlayerTurn()
 	{
-		dialogueText.text = "Choose an action:";
+        //Used to update dialogue text, can be refactored to call coroutines before actions as needed
 	}
 
     IEnumerator PlayerHeal()
@@ -147,10 +174,9 @@ public class BattleSystem : MonoBehaviour
         playerUnit.Heal(5, playerHUD);
 
         // Spawn the healing number over the player's position
-        playerHUD.SpawnFloatingNumber(5, true, playerHUD.transform.position);
+        playerHUD.SpawnFloatingNumber(5, FloatingNumberType.Heal, playerHUD.transform.position);
 
         playerHUD.SetHP(playerUnit.currentHP);
-        dialogueText.text = "You feel renewed strength!";
 
         yield return new WaitForSeconds(2f);
 
@@ -180,6 +206,9 @@ public class BattleSystem : MonoBehaviour
     {
         Debug.Log("Yeah this part worked");
         isSpinning = false;
+
+        // Rotate the player back to normal when the turn ends
+        StartCoroutine(RotatePlayer(playerBattleStation, 0f, 0.2f));
     }
 
     public void OnShieldButton()
@@ -192,8 +221,6 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerShield()
     {
-        dialogueText.text = "You brace for impact!";
-
         // Grant 10 shield points
         playerUnit.GainShield(10);
         playerHUD.SetShield(playerUnit.currentShield); // Update shield UI
@@ -203,6 +230,23 @@ public class BattleSystem : MonoBehaviour
         // Move to enemy turn
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
+    }
+
+    // Helper method to smoothly rotate the player
+    IEnumerator RotatePlayer(Transform target, float targetAngle, float duration)
+    {
+        Quaternion startRotation = target.rotation;
+        Quaternion endRotation = Quaternion.Euler(0, 0, targetAngle);
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
+        {
+            target.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        target.rotation = endRotation; // Ensure final rotation is set correctly
     }
 
 }

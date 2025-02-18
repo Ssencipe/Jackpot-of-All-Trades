@@ -7,16 +7,29 @@ public class FloatingNumberController : MonoBehaviour
     public TextMeshProUGUI numberText;
     public Color damageColor = Color.red;
     public Color healingColor = Color.green;
+    public Color shieldColor = Color.blue;
     public float moveSpeed = 2f;
     public float lifetime = 1.5f;
 
     private float alpha;
 
-    public void Initialize(int value, bool isHealing)
+    public void Initialize(int value, FloatingNumberType type)
     {
-        // Set text and color
+        // Set text and color based on type
         numberText.text = value.ToString();
-        numberText.color = isHealing ? healingColor : damageColor;
+
+        switch (type)
+        {
+            case FloatingNumberType.Damage:
+                numberText.color = damageColor;
+                break;
+            case FloatingNumberType.Heal:
+                numberText.color = healingColor;
+                break;
+            case FloatingNumberType.Shield:
+                numberText.color = shieldColor;
+                break;
+        }
 
         // Initialize alpha for fading
         alpha = 1f;
@@ -45,4 +58,12 @@ public class FloatingNumberController : MonoBehaviour
 
         Destroy(gameObject); // Destroy after fade
     }
+}
+
+// Enum for floating number types
+public enum FloatingNumberType
+{
+    Damage,
+    Heal,
+    Shield
 }
