@@ -22,6 +22,18 @@ public class BattleHUD : MonoBehaviour
         SetShield(unit.currentShield); // Initialize shield display
     }
 
+    // Overloaded method for enemies
+    public void SetHUD(EnemyBase enemy)
+    {
+        hpSlider.maxValue = enemy.maxHP;
+        hpSlider.value = enemy.currentHP;
+        SetHP(enemy.currentHP);
+
+        shieldSlider.maxValue = enemy.maxHP;
+        shieldSlider.value = enemy.currentShield;
+        SetShield(enemy.currentShield);
+    }
+
     public void SetHP(int hp)
     {
         hpText.text = "Health: " + hp; //update HP text
